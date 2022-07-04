@@ -6,7 +6,7 @@ IP Address : 4단위 숫자 ex)111.11.11.111
 DNS Resolver : 전화번호부 역할
 
 ## DNS Loockup
-![[Pasted image 20220705084144.png]]
+![image](https://user-images.githubusercontent.com/49274191/177225830-7f15827e-ed98-4503-a0ce-1b2e1214cf8a.png)
 |단계|위치|내용|
 |-|---|---|
 |1|사용자|웹브라우저에는 캐시메모리가 있다.|
