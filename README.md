@@ -5,3 +5,4 @@
 
 # ToDo
 - [배포] 정적리소스, 동적리소스 따로 배포
+- [JPA] JPA vs Spring Data JPA (javax.persistence랑 spring.jpa 차이가 뭔지 찾아본걸 기반으로)
