@@ -13,7 +13,9 @@ ex) VARCHAR(MySQL) vs VARCHAR2(Oracle)
 
 ![image](https://user-images.githubusercontent.com/49274191/179122087-93695075-ff04-4eb8-9229-616307cca4cc.png)
 
-## properties 괄련
+</br></br></br></br>
+
+## properties 관련
 ### javax vs hibernate
 - javax : 표준확장패키지
 JPA는 그 자체가 어떤 표준을 이르는 말. -> hibernate가 아닌 JPA구현체를 다른 걸 써도 그대로 적용됨
@@ -69,10 +71,10 @@ public class Member {
 	private Long id;
 }
 ```
-@Entity : JPA가 관리해야할 객체임을 알려줌
-@ID : 데이터베이스 PK와 매핑 -> 공식적으로 Long 권장 (참고 : https://www.inflearn.com/questions/35759) -> primitive타입이면 0인지 null인지 구분이 어려워서
-@Table : 객체명과 테이블 명이 다르면 따로 테이블 이름 지정 가능
-@Column : 컬럼명 지정
+- @Entity : JPA가 관리해야할 객체임을 알려줌
+- @ID : 데이터베이스 PK와 매핑 -> 공식적으로 Long 권장 (참고 : https://www.inflearn.com/questions/35759) -> primitive타입이면 0인지 null인지 구분이 어려워서
+- @Table : 객체명과 테이블 명이 다르면 따로 테이블 이름 지정 가능
+- @Column : 컬럼명 지정
 
 ### 사용
 <저장>
