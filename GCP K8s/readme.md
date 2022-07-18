@@ -1,5 +1,6 @@
 ![image](https://user-images.githubusercontent.com/49274191/179630244-079ee351-206e-40ee-b97e-43e2fdef6695.png)
 
+---
 구글에서 진행하는 쿠버네티스 스터디에 참가해 공부하였습니다.
 [강의](https://www.cloudskillsboost.google/quests/29)를 제공받았습니다.
 
