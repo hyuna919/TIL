@@ -16,7 +16,7 @@ gcloud container clusters create io
 </br>
 
 ## Task 1. Get the sample code
-![[Pasted image 20220720080418.png]]
+![image](https://user-images.githubusercontent.com/49274191/180096698-bf884a4d-c89f-4960-a0d2-8dc673ca96f2.png)
 ```
 gsutil cp -r gs://spls/gsp021/* .
 cd orchestrate-with-kubernetes/kubernetes
@@ -66,7 +66,7 @@ curl http://<External IP>:80
 </br>
 
 ## Task 3. Pods
-![[Pasted image 20220720082114.png]]
+![image](https://user-images.githubusercontent.com/49274191/180096733-b149dda4-9046-40ff-b87d-1c06d491d97d.png)
 - Pod는 하나 이상의 컨테이너 컬렉션을 나타내고 보유한다.
 - 일반적으로 서로에 대한 종속성이 강한 여러 컨테이너가 있는 경우 컨테이너를 단일 포드 안에 패키징한다.
 
@@ -157,7 +157,7 @@ Kubernetes를 사용하면 구성 파일에 설명하여 포드를 쉽게 생성
 </br>
 
 ## Task 6. Services
-![[Pasted image 20220720083814.png]]
+![image](https://user-images.githubusercontent.com/49274191/180096758-156435fc-5224-44eb-b599-6d8daded9580.png)
 서비스는 Pod에 안정적인 엔드포인트를 제공합니다.
 why?
 - 포드는 영구적이지 않습니다.활성 상태 또는 준비 상태 확인 실패와 같은 여러 가지 이유로 중지되거나 시작될 수 있으며 이로 인해 문제가 발생합니다.
@@ -184,8 +184,8 @@ kubectl create -f pods/secure-monolith.yaml
 ```
 
 ### 서비스 설정파일
-![[Pasted image 20220720084413.png]]
--   `app: monolith`및 레이블이 있는 모든 포드를 자동으로 찾고 노출하는 데 사용되는 선택기가 있습니다 `secure: enabled`.
+![Pasted image 20220720084413](https://user-images.githubusercontent.com/49274191/180096820-6f385f9f-c844-4acb-8c96-31ba6c174a69.png)
+-   `app: monolith`및 레이블이 있는 모든 포드를 자동으로 찾고 노출하는 데 사용되는 선택기가 있습니다 `secure: enabled`.
 -   이제 포트 31000에서 nginx(포트 443에서)로 외부 트래픽을 전달하는 방법이므로 여기에서 노드 포트를 노출해야 합니다.
 
 
@@ -214,11 +214,11 @@ gcloud compute firewall-rules create allow-monolith-nodeport \
    ```
    `kubectl get services monolith`
    ```
-   ![[Pasted image 20220720085102.png]]
+   ![Pasted image 20220720085102](https://user-images.githubusercontent.com/49274191/180096923-4e44f92d-a46e-4545-ad34-7919bc15a0ab.png)
    ```
    `kubectl describe services monolith`
    ```
-   ![[Pasted image 20220720085125.png]]
+   ![Pasted image 20220720085125](https://user-images.githubusercontent.com/49274191/180097019-faef9513-85d3-4683-be1d-04df92ceb9cc.png)
    -   모노리스 서비스에서 응답을 받을 수 없는 이유는 무엇입니까?
    -   모놀리스 서비스에는 몇 개의 엔드포인트가 있습니까?
    -   모놀리스 서비스에서 Pod가 선택해야 하는 레이블은 무엇인가요?
@@ -250,7 +250,7 @@ gcloud compute firewall-rules create allow-monolith-nodeport \
    ```
    kubectl describe services monolith | grep Endpoints
    ```
-![[Pasted image 20220720085629.png]]
+![Pasted image 20220720085629](https://user-images.githubusercontent.com/49274191/180097083-05e83438-c4a4-40f5-ac80-4a5fac375aab.png)
 
 5.  노드 중 하나를 다시 눌러 이것을 테스트하십시오.
    ```
@@ -261,13 +261,13 @@ gcloud compute firewall-rules create allow-monolith-nodeport \
 </br>
 
 ## Task 9. Deploying applications with Kubernetes
-![[Pasted image 20220720085820.png]]
+![image](https://user-images.githubusercontent.com/49274191/180097121-80524305-02a8-49be-83c5-fb6762afc6f5.png)
 배포는 실행 중인 Pod 수가 사용자가 지정한 원하는 Pod 수와 동일하도록 하는 선언적 방법입니다.
 
 배포의 주요 이점은 Pod 관리의 낮은 수준 세부 정보를 추상화한다는 것입니다. 배후에서 배포는 [복제본 세트](http://kubernetes.io/docs/user-guide/replicasets/) 를 사용하여 Pod 시작 및 중지를 관리합니다. Pod를 업데이트하거나 확장해야 하는 경우 배포에서 처리합니다. 어떤 이유로 인해 중단된 경우 배포에서 Pod 다시 시작도 처리합니다.
 
 ### 예제
-![[Pasted image 20220720085934.png]]
+![image](https://user-images.githubusercontent.com/49274191/180097126-7d879c9c-a17e-4b8a-aa6b-0c460504281d.png)
 
 Pod는 생성된 노드의 수명과 연결됩니다. 위의 예에서 Node3이 다운되었습니다(Pod와 함께 사용). 새 포드를 수동으로 생성하고 이에 대한 노드를 찾는 대신 배포에서 새 포드를 생성하고 Node2에서 시작했습니다.
 
