@@ -23,3 +23,7 @@ console.log(roles.designer); // O
 console.log(roles["designer"]); // O
 console.log(roles[designer]); // err
 ```
+
+
+# 궁금한거 체크
+[링크](정리.md)
