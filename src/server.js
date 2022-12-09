@@ -2,14 +2,15 @@ import http from "http";
 import express from "express";
 // import WebSocket from "ws";
 import SocketIO from "socket.io";
+import { emit } from "process";
 
 const app = express();
 
 app.set("view engine", "pug");
 app.set("views", __dirname + "/views");
 app.use("/public", express.static(__dirname + "/public"));
-app.get("/", (req, res) => res.render("home"));
-app.get("/*", (req, res) => res.redirect("/"));
+app.get("/", (_, res) => res.render("home"));
+app.get("/*", (_, res) => res.redirect("/"));
 
 const handleListen = () => console.log(`Listening on http://localhost:3000`);
 
@@ -18,7 +19,40 @@ const httpServer = http.createServer(app); // express를 http서버로 만들어
 const ioServer = SocketIO(httpServer);
 
 ioServer.on("connection", (socket) => {
-  socket.on("room", (msg) => console.log(msg));
+  // 초기화
+  socket["nickname"] = "Anonymous";
+
+  // 발생한 이벤트 알려줌
+  socket.onAny((event) => {
+    console.log(`Socket Event: ${event}`);
+  });
+
+  // 입장
+  socket.on("enter_room", (roomName, done) => {
+    // 입장
+    socket.join(roomName);
+    done(); // 콜백 : 프론트에서 showRoom실행
+    socket.to(roomName).emit("welcome", socket.nickname); // 입장 알림
+
+    // 접속 중단이 되었을 때(방에서 나가는 것 아님)
+    socket.on("disconnecting", () => {
+      socket.rooms.forEach((room) =>
+        socket.to(room).emit("bye", socket.nickname)
+      );
+    });
+
+    // 메세지 전송
+    socket.on("send_msg", (msg, room, done) => {
+      socket.to(room).emit("send_msg", `${socket.nickname}: ${msg}`);
+      done();
+    });
+
+    // 닉네임
+    socket.on("nickname", (nickname) => (socket["nickname"] = nickname));
+
+    // 개인 메세지
+    // socket.to(roomName).emit("an event", { some: "data" });
+  });
 });
 
 // ws 코드
