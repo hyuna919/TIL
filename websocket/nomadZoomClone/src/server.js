@@ -3,6 +3,7 @@ import express from "express";
 // import WebSocket from "ws";
 import SocketIO from "socket.io";
 import { emit } from "process";
+import { WebSocketServer } from "ws";
 
 const app = express();
 
@@ -54,6 +55,20 @@ ioServer.on("connection", (socket) => {
     // socket.to(roomName).emit("an event", { some: "data" });
   });
 });
+
+function getPublicRooms() {
+  const {
+    sockets: {
+      adpter: { sids, rooms },
+    },
+  } = WebSocketServer;
+  const publicRooms = [];
+  rooms.forEach((_, key) => {
+    if (sids.get(key) === undefined) {
+      publicRooms.push(key);
+    }
+  });
+}
 
 // ws 코드
 // const sockets = [];
