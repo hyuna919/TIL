@@ -1,9 +1,11 @@
 import http from "http";
 import express from "express";
 // import WebSocket from "ws";
-import SocketIO from "socket.io";
+import { Server } from "socket.io";
 import { emit } from "process";
 import { WebSocketServer } from "ws";
+
+import { instrument } from "@socket.io/admin-ui";
 
 const app = express();
 
@@ -17,7 +19,17 @@ const handleListen = () => console.log(`Listening on http://localhost:3000`);
 
 const httpServer = http.createServer(app); // express를 http서버로 만들어야 접근할 수 있어서 이렇게 함.
 // const wss = new WebSocket.Server({ server }); // 인자로 server를 넘셔서 같은 포트에서 http, ws모두 사용할 수 있게됨
-const ioServer = SocketIO(httpServer);
+const ioServer = new Server(httpServer, {
+  cors: {
+    origin: ["https://admin.socket.io"],
+    credentials: true,
+  },
+});
+
+instrument(ioServer, {
+  auth: false,
+  mode: "development",
+});
 
 ioServer.on("connection", (socket) => {
   // 초기화
