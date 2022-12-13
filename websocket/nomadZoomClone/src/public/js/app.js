@@ -28,6 +28,18 @@ socket.on("bye", (user) => {
   addMsg(`-- ${user} is left --`);
 });
 socket.on("send_msg", addMsg);
+socket.on("revalidate_rooms", (rooms) => {
+  const roomList = welcome.querySelector("ul");
+  roomList.innerHTML = "";
+  if (rooms.length === 0) {
+    roomList.innerHTML = "";
+  }
+  rooms.forEach((room) => {
+    const li = document.createElement("li");
+    li.innerText = room;
+    roomList.append(li);
+  });
+}); // === socket.on("room_change", (msg) => console.log(msg));
 
 // 방 입장 -> 서버로
 function handleRoomSubmit(event) {
