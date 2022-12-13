@@ -33,13 +33,23 @@ ioServer.on("connection", (socket) => {
     // 입장
     socket.join(roomName);
     done(); // 콜백 : 프론트에서 showRoom실행
-    socket.to(roomName).emit("welcome", socket.nickname); // 입장 알림
+    socket
+      .to(roomName)
+      .emit("welcome", socket.nickname, countRoomMember(roomName)); // 입장 알림  // socket.to.emit방식 -> 하나의 소켓에
+    ioServer.sockets.emit("revalidate_rooms", getPublicRooms()); // room 목록 갱신 알림 // sserver.sockets.emit방식 -> 모든 소켓에
 
     // 접속 중단이 되었을 때(방에서 나가는 것 아님)
     socket.on("disconnecting", () => {
       socket.rooms.forEach((room) =>
-        socket.to(room).emit("bye", socket.nickname)
+        socket
+          .to(room)
+          .emit("bye", socket.nickname, countRoomMember(roomName) - 1)
       );
+    });
+
+    // 접속 떠남
+    socket.on("disconnect", () => {
+      ioServer.sockets.emit("revalidate_rooms", getPublicRooms());
     });
 
     // 메세지 전송
@@ -59,15 +69,20 @@ ioServer.on("connection", (socket) => {
 function getPublicRooms() {
   const {
     sockets: {
-      adpter: { sids, rooms },
+      adapter: { sids, rooms },
     },
-  } = WebSocketServer;
+  } = ioServer;
   const publicRooms = [];
   rooms.forEach((_, key) => {
     if (sids.get(key) === undefined) {
       publicRooms.push(key);
     }
   });
+  return publicRooms;
+}
+
+function countRoomMember(roomName) {
+  return ioServer.sockets.adapter.rooms.get(roomName)?.size;
 }
 
 // ws 코드

@@ -21,11 +21,13 @@ form.addEventListener("submit", handleRoomSubmit);
 // room.addEventListener("submit", handleMsgSubmit);
 
 // 소켓 이벤트
-socket.on("welcome", (user) => {
+socket.on("welcome", (user, memberCnt) => {
   addMsg(`👋👋 ${user} is joined! 👋👋`);
+  revaliateMemberCnt(memberCnt);
 });
-socket.on("bye", (user) => {
+socket.on("bye", (user, memberCnt) => {
   addMsg(`-- ${user} is left --`);
+  revaliateMemberCnt(memberCnt);
 });
 socket.on("send_msg", addMsg);
 socket.on("revalidate_rooms", (rooms) => {
@@ -90,4 +92,12 @@ function handleNicknameSubmit(event) {
   const msg = input.value;
   socket.emit("nickname", msg);
   input.value = "";
+}
+
+// 인원수 갱신
+function revaliateMemberCnt(memberCnt) {
+  // const welcome = document.getElementById("welcome");
+  // const h3 = room.querySelector("h3");
+  const h3 = document.getElementById("roomCnt");
+  h3.innerText = `(${memberCnt}명)`;
 }
