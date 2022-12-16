@@ -12,7 +12,9 @@ html(lang="en")
         main
             div#myStream
                 video#myFace(autoplay, playsinline, width="400", height="400")
-                button#cameraBtn 🎥 turn off
-                button#micBtn 🎤 mute
+                button#cameraBtn 🎥 TURN OFF
+                button#micBtn 🎤 MUTE
+                select#cameraSelect
+                    option(value="device")  Face Camera
         script(src="/socket.io/socket.io.js")
         script(src="/public/js/app.js") 
