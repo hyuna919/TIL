@@ -20,7 +20,7 @@ let myStream;
 let cameraState = false;
 let micState = false;
 let roomName;
-// let myPeerConnection;
+let myPeerConnection;
 
 // 리스너
 cameraBtn.addEventListener("click", handleCamereClick);
@@ -78,23 +78,32 @@ async function startMedia() {
   welcome.hidden = true;
   call.hidden = false;
   await getMedia();
-  // makeConnection();
+  makeConnection();
 }
 
 /*
 소켓 영역 
 */
 
-socket.on("welcome", () => {
-  console.log("joined");
+socket.on("welcome", async () => {
+  const offer = await myPeerConnection.createOffer();
+  myPeerConnection.setLocalDescription(offer);
+  console.log("sent the offer");
+  socket.emit("offer", offer, roomName);
+});
+socket.on("offer", (offer) => {
+  console.log(offer);
 });
 
-// /*
-// WebRTC
-// */
-// function makeConnection() {
-//   myPeerConnection = new RTCPeerConnection();
-// }
+/*
+WebRTC
+*/
+function makeConnection() {
+  myPeerConnection = new RTCPeerConnection();
+  myStream
+    .getTracks()
+    .forEach((track) => myPeerConnection.addTrack(track, myStream));
+}
 
 /*
 핸들러 영역
