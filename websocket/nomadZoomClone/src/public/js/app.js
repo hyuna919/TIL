@@ -10,18 +10,23 @@ const myFace = document.getElementById("myFace");
 const cameraBtn = document.getElementById("cameraBtn");
 const micBtn = document.getElementById("micBtn");
 const cameraSelect = document.getElementById("cameraSelect");
+const welcome = document.getElementById("welcome");
+const call = document.getElementById("call");
+const welcomeForm = welcome.querySelector("form");
+
+call.hidden = true;
 
 let myStream;
 let cameraState = false;
 let micState = false;
+let roomName;
+// let myPeerConnection;
 
 // 리스너
 cameraBtn.addEventListener("click", handleCamereClick);
 micBtn.addEventListener("click", handleMicClick);
 cameraSelect.addEventListener("input", handleCamereChange);
-
-// 미디어 불러오기
-getMedia();
+welcomeForm.addEventListener("submit", handleWelcomeSubmit);
 
 /*
 함수영역
@@ -69,6 +74,28 @@ async function getCameras() {
   }
 }
 
+async function startMedia() {
+  welcome.hidden = true;
+  call.hidden = false;
+  await getMedia();
+  // makeConnection();
+}
+
+/*
+소켓 영역 
+*/
+
+socket.on("welcome", () => {
+  console.log("joined");
+});
+
+// /*
+// WebRTC
+// */
+// function makeConnection() {
+//   myPeerConnection = new RTCPeerConnection();
+// }
+
 /*
 핸들러 영역
 */
@@ -101,4 +128,12 @@ function handleMicClick() {
 
 async function handleCamereChange() {
   await getMedia(cameraSelect.value);
+}
+
+function handleWelcomeSubmit(event) {
+  event.preventDefault();
+  const input = welcomeForm.querySelector("input");
+  roomName = input.value;
+  socket.emit("join_room", roomName, startMedia);
+  input.value = "";
 }
