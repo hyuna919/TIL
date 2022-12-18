@@ -84,3 +84,7 @@ Socket.IO에서는 Adapter를 레디스, 몽고DB, Postgres 등을 이용해 구
 
 
 ### Admin UI
+
+### MediaDevices
+- getUserMedia() : 현재 유저에게 인가받아서 사용중인 미디어 장치 정보
+- enumerateDevices() : 모든 미디어 장치 정보
