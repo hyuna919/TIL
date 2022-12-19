@@ -74,7 +74,7 @@ async function getCameras() {
   }
 }
 
-async function startMedia() {
+async function initCall() {
   welcome.hidden = true;
   call.hidden = false;
   await getMedia();
@@ -92,7 +92,7 @@ socket.on("welcome", async () => {
   socket.emit("offer", offer, roomName);
 });
 socket.on("offer", (offer) => {
-  console.log(offer);
+  myPeerConnection.setRemoteDescription(offer);
 });
 
 /*
@@ -139,10 +139,11 @@ async function handleCamereChange() {
   await getMedia(cameraSelect.value);
 }
 
-function handleWelcomeSubmit(event) {
+async function handleWelcomeSubmit(event) {
   event.preventDefault();
   const input = welcomeForm.querySelector("input");
+  await initCall();
   roomName = input.value;
-  socket.emit("join_room", roomName, startMedia);
+  socket.emit("join_room", roomName);
   input.value = "";
 }

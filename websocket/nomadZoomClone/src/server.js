@@ -16,9 +16,8 @@ const httpServer = http.createServer(app); // express를 http서버로 만들어
 const wss = SocketIO(httpServer); // 인자로 server를 넘셔서 같은 포트에서 http, ws모두 사용할 수 있게됨
 
 wss.on("connection", (socket) => {
-  socket.on("join_room", (roomName, done) => {
+  socket.on("join_room", (roomName) => {
     socket.join(roomName);
-    done();
     socket.to(roomName).emit("welcome");
   });
   socket.on("offer", (offer, roomName) => {
